@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmn1MuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <video id="video" autoplay loop muted
+        src="https://player.vimeo.com/external/449325247.sd.mp4?s=fe96e186049f392cb71dcfe265caee4f781070b6&profile_id=164&oauth2_token_id=57447761"
+        type="video/mp4">
+    </video>
+    
+            <div class="container">
+                <div class="row mt-5 row1" id="result">
+                    <div class="col-1"></div>
+                    <div class="col-6 mt-5">
+                        <div>
+                            <h4 class="mt-3 ms-3" style="font-family: 'Lora', serif; font-weight:bold">WEATHER</h4>
+                        </div>
+                        <div>
+                            <div class="col-12 d-flex justify-content-center"><img
+                                    style="width: 200px; margin-top:20px;" src="./ballimg-removebg-preview.png" alt="">
+                            </div>
+                        </div>
+                        <div style="margin-top: 40px; margin-left:20px;">
+                            <h6  style="font-family: 'Lora', serif;"></h6>
+                            <p style="font-size: 11px;">Temperature</p>
+                            <h5  style="font-family: 'Lora', serif;">City Name</h5>
+                            <p style="font-size: 30px;"></p>
+                            <img style="height:70px; width:70px;"
+                                src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather02-512.png"
+                                alt="">
+                        </div>
+                    </div>
+                    <div class="col-4 mt-5">
+                        <div >
+                            <input id="input" type="text" placeholder="Enter City Name"
+                                class="form-control no-border mt-2 bg-transparent">
+                            <button type="button" onclick="search()"
+                                class="btn btn-border btn-sm border-light text-dark mt-3 ms-3">Search</button>
+                            <hr>
+                            <h6 style="color: black; font-family: 'Lora', serif; font-size:20px" class="mt-4">Weather
+                                Details</h6>
+                            <p>Country</p>
+                            <p>.</p>
+                            <p>Humidity</p>
+                            <p>.</p>
+                            <p>Wind</p>
+                            <p>.</p>
+                            <p>Pressure</p>
+                            <p>.</p>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+      
+   
+</body>
+<script>
+    function search() {
+        let city = input.value
+        console.log(city);
+        const http = new XMLHttpRequest()
+        http.open('GET', `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=08da94ff2307789a0f0730b640906c0b`);
+        http.send()
+        console.log(http.readyState)
+        http.onreadystatechange = () => {
+            console.log(http.readyState)
+            if (http.readyState == 4) {
+                if (http.status >= 200 && http.status < 300) {
+                    let data = JSON.parse(http.responseText)
+                    console.log(data);
+
+                    let place = data.name
+                    console.log(place);
+
+                    let Country = data.sys.country
+                    console.log(Country);
+
+                    let Humidity = data.main.humidity
+                    console.log(Humidity);
+
+                    let WindSpeed = data.wind.speed
+                    console.log(WindSpeed);
+
+                    let Pressure = data.main.pressure
+                    console.log(Pressure);
+
+                    let weather = data.weather.map(weathers => {
+                        console.log(weathers.main)
+                        console.log(weathers.description)
+                    });
+
+
+                    let Weather = data.weather.map(weathers => weathers);
+
+                    let WeatherDescript = Weather[0].description
+
+                    let Temperature = data.main.temp
+                    console.log(Temperature);
+                    let celcius = eval(Temperature - 273.15)
+                    //console.log(cel);
+                    let celcius1 = celcius.toFixed(1)
+                    console.log(celcius1);
+
+                    date = Date()
+
+
+
+                    result.innerHTML = `
+            
+                    <div class="container">
+                        <div class="row mt-5" id="result">
+                            <div class="col-1"></div>
+                            <div class="col-6 mt-5">
+                                <div id="d2">
+                                     <h4 class="mt-3 ms-3" style="font-family: 'Lora', serif;">WEATHER</h4>
+                                </div>
+                                <div id="d11">
+                                    <div class="col-12 d-flex justify-content-center"><img style="width: 200px; margin-top:20px;" src="./ballimg-removebg-preview.png" alt=""> </div>
+                                </div>
+                                <div style="margin-top: 40px; margin-left:20px;">
+                                    <h6 id="d8" style="font-family: 'Lora', serif; font-size: 30px;"> ${celcius1} &deg;C <span style="font-size:15px">${WeatherDescript}</span></h6>
+                                    <p id="d9" style="font-size: 11px;">feels like ${celcius1} &deg;C</p>
+                                    <h5 id="d10" style="font-family: 'Lora', serif;">${place}</h5>
+                                    <p style="">${date}</p>
+                                    <img  style="height:70px; width:70px;" src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather02-512.png" alt="">
+                                </div>
+                            </div>
+                            <div class="col-4 mt-5">
+                                <div id="d3">
+                                    <input id="input" type="text" placeholder="Enter City Name" class="form-control no-border mt-2 bg-transparent">
+                                    <button type="button" onclick="search()" class="btn btn-border btn-sm border-light text-white mt-3 ms-3">Search</button>
+                                    <button id="refresh" type="button" onclick="location.reload()"
+                                     class="btn btn-border btn-sm border-light text-dark mt-3 ms-5"
+                                     ><i class="fa-solid fa-arrows-rotate"></i></button><hr>
+                                    <h6 style="color: black; font-family: 'Lora', serif;" class="mt-4" >Weather Details</h6>
+                                    <p id="d3">Country</p>
+                                    <p id="d4">${Country}</p>
+                                    <p id="d3">Humidity</p>
+                                    <p id="d5">${Humidity}%</p>
+                                    <p id="d3">Wind</p>
+                                    <p id="d6">${WindSpeed} kmph</p>
+                                    <p id="d3">Pressure</p>
+                                    <p id="d7">${Pressure}</p><hr>
+                                </div>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
+              
+            `
+                }
+            }
+
+        }
+    }
+</script>
+
+</html>
